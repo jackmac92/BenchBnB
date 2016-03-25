@@ -1,6 +1,6 @@
 var React = require('react');
 var ReactDOM = require('react-dom');
-var BenchIndex = require('./components/index');
+var Search = require('./components/search');
 
 var App = React.createClass({
 
@@ -8,7 +8,7 @@ var App = React.createClass({
     return (
       <div>
         <h1>BenchBNB</h1>
-        <BenchIndex />
+        <Search />
       </div>
     );
   }

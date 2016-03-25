@@ -29,7 +29,7 @@ var Index = React.createClass({
       return <li key={b.id}>{b.description}</li>;
     });
     return (
-      <ul>
+      <ul className="bench-index">
         {benches}
       </ul>
     );
