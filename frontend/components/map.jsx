@@ -74,7 +74,6 @@ var Map = React.createClass({
   },
 
   render: function() {
-    debugger
     this.updateMarkers();
     return (
       <div className="map" ref="map">
