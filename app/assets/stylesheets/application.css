@@ -16,7 +16,7 @@
 
 .map {
   height: 500px;
-  width: 500px;
+  width: 100%;
   float:left;
 
 }
@@ -24,4 +24,13 @@
   float:left;
   width: 300px;
 
+}
+li {
+  list-style: none;
+}
+.bench-index > li {
+  font-size: 18px;
+  font-family: sans-serif;
+
+  border: 1px solid gray;
 }
