@@ -1,6 +1,6 @@
 class Api::BenchesController < ApplicationController
   def index
-    @benches = Bench.filtered_by(params[:filters])
+    @benches = Bench.includes(:reviews).filtered_by(params[:filters])
   end
 
   def create
@@ -11,6 +11,10 @@ class Api::BenchesController < ApplicationController
     else
       render json: @bench.errors.full_messages, status: 422
     end
+  end
+
+  def show
+    @bench = Bench.includes(:reviews).find(params[:id])
   end
   private
   def bench_params

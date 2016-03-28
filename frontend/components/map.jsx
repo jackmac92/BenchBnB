@@ -16,17 +16,15 @@ var Map = React.createClass({
       center: this.props.center,
       zoom: 13
     };
-    window.mapComponent = this;
+
     this.map = new google.maps.Map(map, options);
     this.listenForMove();
     this.listenForClick();
 
     this.benchStoreToken = BenchStore.addListener(this.setStateFromStore);
-    // this.filterStoreToken = FilterStore.addListener(this.setStateFromStore);
   },
 
   componentWillUnmount: function() {
-    // this.filterStoreToken.remove();
     this.benchStoreToken.remove();
   },
 
@@ -43,7 +41,7 @@ var Map = React.createClass({
     google.maps.event.addListener(this.map, 'click', function (e) {
       var lat = e.latLng.lat();
       var lng = e.latLng.lng();
-      that.props.clickMapHandler({lat:lat,lng:lng});
+      that.props.newBenchHandler({lat:lat,lng:lng});
     });
   },
 
@@ -71,8 +69,8 @@ var Map = React.createClass({
     });
     this.mapMarkers[loc.id] = marker;
     marker.addListener('click', function () {
-      alert("clicked on: " + loc.description);
-    });
+      this.props.clickBenchHandler(loc.id);
+    }.bind(this));
   },
 
   updateMarkers: function () {

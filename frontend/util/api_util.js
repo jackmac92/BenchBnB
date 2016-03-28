@@ -2,7 +2,6 @@ var ApiActions = require('../actions/api');
 
 var ApiUtil = {
   fetchBenches: function (params) {
-    console.log(params);
     $.ajax({
       type: "GET",
       dataType: "json",
@@ -17,6 +16,18 @@ var ApiUtil = {
     });
   },
 
+  getBench: function (id, callback) {
+    $.ajax({
+      type: "GET",
+      dataType: "json",
+      url: "api/benches/"+id,
+      success: function (bench) {
+        ApiActions.receiveOne(bench);
+        if (callback) callback(bench);
+      }
+    });
+  },
+
   createBench: function (benchData, callback) {
     $.ajax({
       type: "POST",
@@ -25,10 +36,22 @@ var ApiUtil = {
       data: {bench: benchData},
       success: function (bench) {
         ApiActions.receiveNewBench(bench);
-        callback && callback(bench);
+        if (callback) callback(bench);
       },
       error: function () {
         console.log("ApiUtil#createBench error");
+      }
+    });
+  },
+
+  createReview: function (reviewData) {
+    $.ajax({
+      type: "POST",
+      dataType: "json",
+      url: "api/reviews",
+      data: {review: reviewData},
+      success: function (review) {
+        ApiActions.receiveNewReview(review);
       }
     });
   }

@@ -31,18 +31,22 @@ var Search = React.createClass({
     ApiUtil.fetchBenches(newState.params);
   },
 
-  clickMapHandler: function (coords) {
+  newBenchHandler: function (coords) {
     this.props.history.push({
       pathname: "benches/new",
       query: coords
     });
   },
 
+  clickBenchHandler: function (id) {
+    this.props.history.push('benches/'+id);
+  },
+
   render: function() {
     return (
       <div>
         <Index />
-        <Map clickMapHandler={this.clickMapHandler} center={{lat:40.725024, lng:-73.996792}} />
+        <Map newBenchHandler={this.newBenchHandler} clickBenchHandler={this.clickBenchHandler} center={{lat:40.725024, lng:-73.996792}} />
         <Filter />
       </div>
     );

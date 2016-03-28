@@ -26,7 +26,14 @@ var Index = React.createClass({
 
   render: function() {
     var benches = this.state.benches.map(function(b) {
-      return <li key={b.id}>{b.description}</li>;
+      return (
+        <li key={b.id}>
+          <a href={"/#/benches/"+b.id}>
+            {b.description}
+          </a>
+          <br />
+          Avg Rating: {b.avg_rating || "No Reviews"}
+        </li>);
     });
     return (
       <ul className="bench-index">

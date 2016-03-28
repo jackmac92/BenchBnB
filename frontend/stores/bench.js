@@ -12,8 +12,6 @@ var resetBenches = function (benches) {
   _benches = benches;
 };
 var addBench = function (bench) {
-  console.log("Recieved new bench");
-  console.log(bench);
   _benches.push(bench);
 };
 BenchStore.hasId = function (id) {
@@ -23,6 +21,13 @@ BenchStore.hasId = function (id) {
     }
   }
   return false;
+};
+BenchStore.find = function (id) {
+  for (var i = 0; i < _benches.length; i++) {
+    if (_benches[i].id == id) {
+      return _benches[i];
+    }
+  }
 };
 BenchStore.__onDispatch = function (payload) {
   switch (payload.actionType) {
