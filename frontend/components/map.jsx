@@ -1,6 +1,8 @@
 var React = require('react');
 var ReactDOM = require('react-dom');
 var BenchStore = require('../stores/bench');
+var FilterStore = require('../stores/filter_params');
+var FilterActions = require('../actions/filter');
 var ApiUtil = require('../util/api_util');
 
 var Map = React.createClass({
@@ -14,14 +16,17 @@ var Map = React.createClass({
       center: this.props.center,
       zoom: 13
     };
-
+    window.mapComponent = this;
     this.map = new google.maps.Map(map, options);
     this.listenForMove();
+    this.listenForClick();
 
     this.benchStoreToken = BenchStore.addListener(this.setStateFromStore);
+    // this.filterStoreToken = FilterStore.addListener(this.setStateFromStore);
   },
 
   componentWillUnmount: function() {
+    // this.filterStoreToken.remove();
     this.benchStoreToken.remove();
   },
 
@@ -31,6 +36,15 @@ var Map = React.createClass({
 
   setStateFromStore: function () {
     this.setState(this.stateFromStore());
+  },
+
+  listenForClick: function () {
+    var that = this;
+    google.maps.event.addListener(this.map, 'click', function (e) {
+      var lat = e.latLng.lat();
+      var lng = e.latLng.lng();
+      that.props.clickMapHandler({lat:lat,lng:lng});
+    });
   },
 
 
@@ -44,11 +58,12 @@ var Map = React.createClass({
         northEast: { lat: ne.lat(), lng: ne.lng() },
         southWest:{ lat: sw.lat(), lng: sw.lng() }
       };
-      ApiUtil.fetchBenches(benchBounds);
+      FilterActions.receiveBounds(benchBounds);
     });
   },
 
   addMarker: function (loc) {
+    if (this.mapMarkers[loc.id]) return;
     var pos = new google.maps.LatLng(loc.lat, loc.lng);
     marker = new google.maps.Marker({
       position: pos,
@@ -68,13 +83,13 @@ var Map = React.createClass({
     Object.keys(this.mapMarkers).map(function (markId) {
       if (!BenchStore.hasId(markId)) {
         that.mapMarkers[markId].setMap(null);
-        console.log(that.mapMarkers[markId]);
+        delete that.mapMarkers[markId];
       }
     });
   },
 
   render: function() {
-    debugger
+
     this.updateMarkers();
     return (
       <div className="map" ref="map">

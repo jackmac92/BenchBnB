@@ -1,0 +1,7 @@
+var FilterConstants = {
+  RECEIVE_BOUNDS:"RECEIVE_BOUNDS",
+  RECEIVE_MIN_SEATS:"RECEIVE_MIN_SEATS",
+  RECEIVE_MAX_SEATS:"RECEIVE_MAX_SEATS"
+};
+
+module.exports = FilterConstants;
